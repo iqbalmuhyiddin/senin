@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Perpus;
 
 class PerpusController extends Controller
 {
@@ -17,7 +18,8 @@ class PerpusController extends Controller
     public function index()
     {
         //
-        return "nusantech";
+        $perpus = Perpus::all();
+        return view('perpus.index',compact('perpus'));
     }
 
     /**
@@ -28,6 +30,7 @@ class PerpusController extends Controller
     public function create()
     {
         //
+        return view('perpus.create');
     }
 
     /**
@@ -39,6 +42,18 @@ class PerpusController extends Controller
     public function store(Request $request)
     {
         //
+        $perpus = new Perpus();
+        $perpus->judul = $request->input('judul');
+        $perpus->pengarang = $request->input('pengarang');
+        $perpus->penerbit = $request->input('penerbit');
+        $perpus->tahun = $request->input('tahun');
+        $perpus->kota = $request->input('kota');
+        $perpus->deskripsi = $request->input('deskripsi');
+        if($perpus->save()){
+            return redirect()->route('perpus.index')->with('alert','Berhasil menambah :)');
+        }else{
+            return redirect()->back();
+        }
     }
 
     /**
@@ -50,6 +65,8 @@ class PerpusController extends Controller
     public function show($id)
     {
         //
+        $perpus = Perpus::find($id);
+        return view('perpus.show',compact('perpus'));
     }
 
     /**
@@ -61,6 +78,8 @@ class PerpusController extends Controller
     public function edit($id)
     {
         //
+        $perpus = Perpus::find($id);
+        return view('perpus.edit', compact('perpus'));
     }
 
     /**
@@ -73,6 +92,18 @@ class PerpusController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $perpus = Perpus::find($id);
+        $perpus->judul = $request->input('judul');
+        $perpus->pengarang = $request->input('pengarang');
+        $perpus->penerbit = $request->input('penerbit');
+        $perpus->tahun = $request->input('tahun');
+        $perpus->kota = $request->input('kota');
+        $perpus->deskripsi = $request->input('deskripsi');
+        if($perpus->save()){
+            return redirect()->route('perpus.index')->with('alert','Berhasil mengubah :)');
+        }else{
+            return redirect()->back();
+        }
     }
 
     /**
@@ -84,5 +115,10 @@ class PerpusController extends Controller
     public function destroy($id)
     {
         //
+        if(Perpus::destroy($id)){
+            return redirect()->route('perpus.index')->with('alert','Berhasil menghapus :(');
+        }else{
+            return redirect()->route('perpus.index')->with('alert','Gagal menghapus :(');
+        }
     }
 }

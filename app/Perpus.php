@@ -8,6 +8,6 @@ class Perpus extends Model
 {
     //
     protected $table = 'perpus';
-	protected $fillable =  array('judul' , 'isi' );
-	protected $dates = ['deleted_at'];
+	protected $fillable =  array('judul' , 'pengarang', 'penerbit', 'tahun', 'kota', 'deskripsi');
+	
 }
